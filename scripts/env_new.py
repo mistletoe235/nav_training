@@ -388,7 +388,7 @@ class NavigationEnv(IsaacEnv):
             # self.target_vel[:, :, :2] = direction.unsqueeze(1) * speed_scale.unsqueeze(-1)
         else:
             self.target_pos[:, 0, 0] = torch.linspace(-0.5, 0.5, self.num_envs) * 32.
-            self.target_pos[:, 0, 1] = -24.
+            self.target_pos[:, 0, 1] = 0.
             self.target_pos[:, 0, 2] = 2.     
 
 
@@ -610,11 +610,11 @@ class NavigationEnv(IsaacEnv):
 
         # Final reward calculation
         if (self.cfg.env_dyn.num_obstacles != 0):
-            # self.reward = reward_vel + 1. + reward_safety_static * 1.0 + reward_safety_dynamic * 1.0 - penalty_smooth * 0.1 - penalty_height * 8.0
-            self.reward = reward_vel + 1. + reward_safety_static * 1.0 - penalty_smooth * 0.1 - penalty_height * 8.0
+            self.reward = reward_vel + 1. + reward_safety_static * 1.0 + reward_safety_dynamic * 1.0 - penalty_smooth * 0.1 - penalty_height * 8.0
+            # self.reward = reward_vel + 1. + reward_safety_static * 1.0 - penalty_smooth * 0.1 - penalty_height * 8.0
         else:
             self.reward = reward_vel + 1. + reward_safety_static * 1.0 - penalty_smooth * 0.1 - penalty_height * 8.0
-            self.reward -= penalty_decel.squeeze(-1)
+            # self.reward -= penalty_decel.squeeze(-1)
 
         # Terminal reward
         # self.reward[collision] -= 50. # collision
